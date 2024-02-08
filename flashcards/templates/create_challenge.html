@@ -1,0 +1,57 @@
+{% extends "main.html" %}
+{% load static %}
+{% block 'header' %}
+    <link href="{% static 'users/css/register.css' %}" rel="stylesheet">
+    <link href="{% static 'flashcards/css/create_flashcard.css' %}" rel="stylesheet">
+    <link href="{% static 'flashcards/css/create_challenge.css' %}" rel="stylesheet">
+{% endblock 'header' %}
+{% block 'content' %}
+
+    {% include 'partials/header.html' %}
+
+    <div class="container ctx">
+        <br>
+        <br>
+        <h2 class="font-main">Iniciar desafio</h2>
+        <p class="fonte-secondary">Escolha as categorias e a dificuldade do desafio</p>
+        {% if messages %}
+            <br>
+            {% for message in messages %}
+                <section class="alert {{message.tags}}">
+            {{message}}
+                </section>
+            {% endfor %}
+        {% endif %}
+        <div class="row">
+            <div class="col-md">
+                <form action="{% url 'create_challenge' %}" method="POST">{% csrf_token%}
+                <label for="">Título</label>
+                <input type="text" class="form-control" name="title">
+            </div>
+            <div class="col-md">
+                <label>Categoria</label>
+                <select name="category" class="form-select" multiple>
+                    {% for category in categories %}
+                        <option value="{{category.id}}">{{category.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md">
+                <label>Dificuldade</label>
+                <select name="difficulty" class="form-select">
+                    {% for difficulty in difficulties %}
+                        <option value="{{difficulty.0}}">{{difficulty.1}}</option>
+                    {% endfor %}
+            </select>
+            </div>
+            <div class="col-md">
+                <label>Quantidade de perguntas</label>
+                <input type="number" class="form-control" name="number_questions">
+            </div>
+        </div>
+        <br>
+        <br>
+        <input type="submit" class="btn-register" value="Iniciar desafio">
+        </form>
+    </div>
+{% endblock 'content' %}
